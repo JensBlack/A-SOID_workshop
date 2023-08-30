@@ -1,0 +1,41 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+	"name": "asoid-workshop",
+	"dockerComposeFile": "Dockerfile",
+	"service": "app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	// Use this environment variable if you need to bind mount your local source code into a new container.
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	},
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "conda init",
+	"postAttachCommand": {
+		"server": "streamlit run asoid/app.py"
+	},
+	"portsAttributes": {
+		"8501": {
+			"label": "Application",
+			"onAutoForward": "openPreview"
+		}
+	},
+	"hostRequirements": {
+		"cpus": 2,
+		"memory": "16gb",
+		"storage": "32gb"
+	},
+	"forwardPorts": [
+		8501
+	],
+	"customizations": {
+		"settings": {
+			"python.pythonPath": "/usr/local/bin/python"
+		},
+		"vscode": {
+			"extensions": [
+				"ms-python.python@2023.8.0",
+				"ms-toolsai.jupyter@2023.3.1201040234"
+			]
+		}
+	}
+}
