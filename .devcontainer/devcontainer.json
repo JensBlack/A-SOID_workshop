@@ -1,11 +1,11 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/anaconda
 {
-	"name": "Anaconda (Python 3)",
+	"name": "A-SOiD workshop",
 	"build": { 
 		"context": "..",
 		"dockerfile": "Dockerfile"
-	}
+	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -21,4 +21,32 @@
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
+	// Start the app.
+	"postAttachCommand": {
+		"server": "streamlit run app.py"
+	},
+	"portsAttributes": {
+		"8501": {
+			"label": "Application",
+			"onAutoForward": "openPreview"
+		}
+	},
+	"hostRequirements": {
+		"cpus": 2,
+		"memory": "4gb",
+		"storage": "32gb"
+	},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [8501],
+	"customizations": {
+		"settings": {
+			"python.pythonPath": "/usr/local/bin/python"
+		},
+		"vscode": {
+			"extensions": [
+				"ms-python.python@2023.8.0",
+				"ms-toolsai.jupyter@2023.3.1201040234"
+			],
+		},
+	}
 }
