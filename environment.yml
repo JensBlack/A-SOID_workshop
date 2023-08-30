@@ -4,5 +4,6 @@ dependencies:
   - python=3.8
   - ffmpeg
   - pip
+  - ipykernel # for jupyter notebook in vs code
   - pip:
     - "--editable=.[dev]"
