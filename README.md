@@ -2,7 +2,7 @@
 
 To start the workshop, click the button below:
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/JensBlack/A-SOiD_workshop)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/JensBlack/A-SOID_workshop)
 
 
 ### DATA:
