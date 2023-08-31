@@ -12,6 +12,8 @@ When done, start A-SOiD with:
 miniconda/bin/streamlit run asoid/app.py
 ```
 
+Then go to Ports and click the `A-SOiD App` Port.
+
 
 ### DATA:
 
