@@ -8,7 +8,6 @@ tasks:
     command: |
       miniconda/bin/conda init > /dev/null
       exec bash
-      cd miniconda/bin/streamlit run asoid/app.py
     
 github:
   prebuilds:
