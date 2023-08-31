@@ -9,7 +9,7 @@ Install is automatic, but requires a single "Yes" along the way.
 When done, start A-SOiD with:
 
 ```bash
-miniconda/bin/streamlit run asoid/app.py
+asoid app
 ```
 
 Then go to Ports and click the `A-SOiD App` Port.
