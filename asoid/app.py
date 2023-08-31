@@ -159,7 +159,7 @@ def main():
     logo_im_ = Image.open(logo_fname_)
     # set webpage icon and layout
     st.set_page_config(
-        page_title="A-SOiD",
+        page_title="A-SOiD Workshop",
         page_icon=logo_im_,
         layout="wide",
         menu_items={
@@ -225,35 +225,49 @@ def main():
         _, mid_im, _ = st.columns([0.35, 1, 0.35])
 
         mid_im.image(logo_im_)
+        mid_im.subheader("Workshop v0.3")
         st.write('---')
         try:
             working_dir = st.session_state['config']["Project"].get("PROJECT_PATH")
             prefix = st.session_state['config']["Project"].get("PROJECT_NAME")
             data, config = load_data(working_dir,
                                      prefix)
-            menu_options = ['Menu', 'Upload Data', 'Extract Features', 'Active Learning',
-                            'Refine Behaviors', 'Create New Dataset', 'Predict', 'Discover']
+            menu_options = ['Menu'
+            , 'Upload Data'
+            , 'Extract Features'
+            , 'Active Learning'
+            #, 'Refine Behaviors'
+            #, 'Create New Dataset'
+            , 'Predict'
+            #, 'Discover'
+            ]
             icon_options = ['window-desktop',
                             'upload',
                             'bar-chart-line',
                             'diagram-2',
-                            'images',
-                            'file-earmark-plus',
+                            #'images',
+                            #'file-earmark-plus',
                             'robot',
-                            "signpost-split",
+                            #"signpost-split",
                             ]
 
         except:
-            menu_options = ['Menu', 'Upload Data', 'Active Learning',
-                            'Refine Behaviors', 'Create New Dataset', 'Predict', 'Discover']
+            menu_options = ['Menu'
+            , 'Upload Data'
+            , 'Active Learning'
+            #, 'Refine Behaviors'
+            #, 'Create New Dataset'
+            , 'Predict'
+            #, 'Discover'
+            ]
             icon_options = ['window-desktop',
                             'upload',
 
                             'diagram-2',
-                            'images',
-                            'file-earmark-plus',
+                            #'images',
+                            #'file-earmark-plus',
                             'robot',
-                            "signpost-split",
+                            #"signpost-split",
                             ]
 
         nav_options = option_menu(None, menu_options,

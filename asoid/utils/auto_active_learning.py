@@ -40,9 +40,17 @@ def show_classifier_results(behavior_classes, all_score,
                                                               key=f'color_option{i}')
     keys = ['Behavior', 'Performance %', 'Iteration #']
     perf_by_class = {k: [] for k in behavior_classes}
-    # st.write(base_score, learn_score)
+
+    #TODO: This is a hotfix!
+    for i, l_score in enumerate(learn_score):
+        if l_score.shape[0] != len(base_score):
+            len_dif = len(base_score) - l_score.shape[0]
+            learn_score[i] = np.pad(l_score, (0,len_dif), "constant")
+        else:
+            pass
+
     scores = np.vstack((np.hstack(base_score), np.vstack(learn_score)))
-    # st.write(scores)
+
     mean_scores = [100 * round(np.mean(scores[j], axis=0), 2) for j in range(len(scores))]
     mean_scores2beat = np.mean(all_score, axis=0)
     scores2beat_byclass = all_score.copy()

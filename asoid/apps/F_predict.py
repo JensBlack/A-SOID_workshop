@@ -649,19 +649,21 @@ def main(ri=None, config=None):
             if annot_vid_path == 'Add New Data':
 
                 try:
-                    st.write(project_dir, iter_folder)
                     [iterX_model, _, _] = load_iterX(project_dir, iter_folder)
                     ri.info(f'loaded {iter_folder} model')
                     prompt_setup(software, ftype, selected_bodyparts, annotation_classes,
                                  framerate, videos_dir, project_dir, iter_folder)
                 except:
                     ri.info(f'Please train a {iter_folder} model in :orange[Active Learning] step.')
-                if st.session_state['pose'] is not None:
-                    placeholder = st.empty()
-                    predict_annotate_video(ftype, selected_bodyparts, iterX_model, framerate, frames2integ,
-                                           annotation_classes,
-                                           None, videos_dir, iter_folder,
-                                           None, placeholder)
+                if "pose" in st.session_state:
+                    if st.session_state['pose'] is not None:
+                        placeholder = st.empty()
+                        predict_annotate_video(ftype, selected_bodyparts, iterX_model, framerate, frames2integ,
+                                            annotation_classes,
+                                            None, videos_dir, iter_folder,
+                                            None, placeholder)
+                else:
+                    pass
             else:
                 top_most_container = st.container()
                 video_col, summary_col = st.columns([2, 1.5])
