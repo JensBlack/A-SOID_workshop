@@ -4,6 +4,14 @@ To start the workshop, click the button below:
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/JensBlack/A-SOID_workshop)
 
+Install is automatic, but requires a single "Yes" along the way.
+
+When done, start A-SOiD with:
+
+```bash
+miniconda/bin/streamlit run asoid/app.py
+```
+
 
 ### DATA:
 
