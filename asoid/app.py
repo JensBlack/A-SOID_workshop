@@ -61,89 +61,54 @@ def index():
                 f"font-family:Avenir; font-weight:normal'>Get Started by Selecting a Step</h1> "
                 , unsafe_allow_html=True)
 
-    selected_step = st.select_slider('Steps',
-                                     options=['Step 1',
-                                              'Step 2',
-                                              'Step 3',
-                                              'Step 4',
-                                              'Step 5',
-                                              'Step 6'],
-                                     value=st.session_state['page'],
-                                     label_visibility='collapsed')
 
-    colL, colR = st.columns(2)
-    if selected_step == 'Step 1':
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'>Step 1: Upload Your Pose Estimation and Annotation Data"
-                      , unsafe_allow_html=True)
+    step1 = st.expander("Step 1 - Upload Config File", expanded = True)
+    with step1:
+        colL, colR = st.columns(2)
+        
+        colL.subheader("Start your A-SOiD Journey")
 
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'>"
-                      f""
-                      f"To begin, ensure that your pose estimation files are in either DLC or SLEAP format. "
-                      f"These files contain the spatial coordinates of the individual body parts in your video,"
-                      f" enabling us to accurately track movement and analyze posture."
-                      f"", unsafe_allow_html=True)
+        colL.markdown("To begin the workshop, copy the path to the **WORKSHOP_START** project into the config upload, then press **:red[Upload]**"
+        " \n\n >Tip: It should be the default path entered already.\n\n **If you have any issues along the way, there is a backup version, you can upload as well.**"
+                        , unsafe_allow_html=True)
         colR.markdown("<p style='text-align: right; color: grey; '>" + img_to_html(step1_fname, width=350) + "</p>",
-                      unsafe_allow_html=True)
-
-    elif selected_step == 'Step 2':
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'> Step 2: Extract spatio-temporal features from pose"
-                      f"", unsafe_allow_html=True)
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'> In this step,"
-                      f" you will examine the distribution of your annotated behaviors. "
-                      f"Once you define your minimum duration, features are then computed "
-                      f"across time.", unsafe_allow_html=True)
+                        unsafe_allow_html=True)
+    step2 = st.expander("Step 2 - Feature Extraction")
+    with step2:
+        colL, colR = st.columns(2)
+        colL.subheader("Extract spatio-temporal features from pose")
+        colL.markdown(f"In this step,"
+                        f" you will examine the distribution of your annotated behaviors. "
+                        f"Once you define your minimum duration, features are then computed "
+                        f"across time.", unsafe_allow_html=True)
+        colL.markdown("-  **Select the best window to fit the data!** \n\n  > But be carefull, the smaller the window, the longer the training time later...")
         colR.markdown("<p style='text-align: right; color: grey; '>" + img_to_html(step2_fname, width=350) + "</p>",
-                      unsafe_allow_html=True)
-    elif selected_step == 'Step 3':
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'> Step 3: Training a classifier"
-                      f"", unsafe_allow_html=True)
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'> In this step,"
-                      f" you will build a machine learning classifier. "
-                      f"A-SOiD automatically balances your training data to prevent  "
-                      f"emphasis on large classes.", unsafe_allow_html=True)
+                        unsafe_allow_html=True)
+    step3 = st.expander("Step 3 - Active learning")
+    with step3:
+        colL, colR = st.columns(2)
+        colL.subheader("Training a classifier")
+        colL.markdown(f" In this step,"
+                        f" you will build a machine learning classifier. "
+                        f"A-SOiD automatically balances your training data to prevent  "
+                        f"emphasis on large classes.", unsafe_allow_html=True)
+        colL.markdown("- **Find the right parameters and train the best classifier**")
         colR.markdown("<p style='text-align: right; color: grey; '>" + img_to_html(step3_fname, width=350) + "</p>",
-                      unsafe_allow_html=True)
-    elif selected_step == 'Step 4':
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'> Step 4: Manual refinement on new data"
-                      f"", unsafe_allow_html=True)
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'> In this step,"
-                      f" you will refine the low confidence behaviors. "
-                      f"The refinements will be added to the training dataset."
-                      f"", unsafe_allow_html=True)
-        colR.markdown("<p style='text-align: right; color: grey; '>" + img_to_html(step4_fname, width=350) + "</p>",
-                      unsafe_allow_html=True)
+                        unsafe_allow_html=True)
 
-    elif selected_step == 'Step 5':
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'> Step 5: Discover subtle differences within behavior"
-                      f"", unsafe_allow_html=True)
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'> In this step,"
-                      f" you can run unsupervised learning on a particular behavior to get "
-                      f"segmented behaviors."
-                      f"", unsafe_allow_html=True)
-        colR.markdown("<p style='text-align: right; color: grey; '>" + img_to_html(step5_fname, width=350) + "</p>",
-                      unsafe_allow_html=True)
+    step4 = st.expander("Step 4 - Predict new data")
 
-    elif selected_step == 'Step 6':
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'> Step 5: Discover subtle differences within behavior"
-                      f"", unsafe_allow_html=True)
-        colL.markdown(f" <h1 style='text-align: left; color: #FFFFFF; font-size:18px; "
-                      f"font-family:Avenir; font-weight:normal'> In this step,"
-                      f" you can run unsupervised learning on a particular behavior to get "
-                      f"segmented behaviors."
-                      f"", unsafe_allow_html=True)
-        colR.markdown("<p style='text-align: right; color: grey; '>" + img_to_html(step5_fname, width=350) + "</p>",
-                      unsafe_allow_html=True)
+    with step4:
+        colL, colR = st.columns(2)
+        colL.subheader("Predict on new data")
+        colL.markdown(" In this step,"
+                        f" you use your trained machine learning classifier to predict on new data. "
+                        f" \n For this, enter this path: :green[data/mouse083_task1_annotator1_alt.csv] and start to predict!"
+                        , unsafe_allow_html=True)
+        colL.markdown("-**This is only a demo, so relax!**")
+        colR.markdown("<p style='text-align: right; color: grey; '>" + img_to_html(step3_fname, width=350) + "</p>",
+                        unsafe_allow_html=True)
+
 
     bottom_cont = st.container()
 
