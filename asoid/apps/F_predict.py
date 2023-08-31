@@ -276,55 +276,10 @@ def prompt_setup(software, ftype, selected_bodyparts, annotation_classes,
         else:
             st.error('Pose origin not recognized.')
             st.stop()
-        new_pose_csvs = pose_expander.file_uploader('Upload Corresponding Pose Files',
-                                                   accept_multiple_files=True,
-                                                   type=ftype, key='pose')
+        new_pose_csvs = pose_expander.text_input('Upload Corresponding Pose Files',
+                                                 key='pose')
         st.session_state['smooth_size'] = param_expander.number_input('Minimum frames per behavior',
                                                                       min_value=0, max_value=None, value=12)
-        # if len(new_pose_csvs) > 0:
-        #
-        #     # st.session_state['uploaded_vid'] = new_videos
-        #     new_pose_list = []
-        #     for i, f in enumerate(new_pose_csvs):
-        #
-        #         #current_pose = pd.read_csv(f,
-        #         #                           header=[0, 1, 2], sep=",", index_col=0)
-        #         #todo: adapt to multi animal by reading from config
-        #         current_pose = load_pose_ftype(f, ftype)
-        #
-        #         bp_level = 1
-        #         bp_index_list = []
-        #
-        #         if i == 0:
-        #             st.info("Selected keypoints/bodyparts (from config): " + ", ".join(selected_bodyparts))
-        #             st.info("Available keypoints/bodyparts in pose file: " + ", ".join(
-        #                 current_pose.columns.get_level_values(bp_level).unique()))
-        #             # check if all bodyparts are in the pose file
-        #
-        #             if len(selected_bodyparts) > len(current_pose.columns.get_level_values(bp_level).unique()):
-        #                 st.error(f'Not all selected keypoints/bodyparts are in the pose file: {f.name}')
-        #                 st.stop()
-        #             elif len(selected_bodyparts) < len(current_pose.columns.get_level_values(bp_level).unique()):
-        #                 # subselection would take care of this, so we need to make sure that they all exist
-        #                 for bp in selected_bodyparts:
-        #                     if bp not in current_pose.columns.get_level_values(bp_level).unique():
-        #                         st.error(f'At least one keypoint "{bp}" is missing in pose file: {f.name}')
-        #                         st.stop()
-        #             for bp in selected_bodyparts:
-        #                 bp_index = np.argwhere(current_pose.columns.get_level_values(bp_level) == bp)
-        #                 bp_index_list.append(bp_index)
-        #             selected_pose_idx = np.sort(np.array(bp_index_list).flatten())
-        #             # get rid of likelihood columns for deeplabcut
-        #             idx_llh = selected_pose_idx[2::3]
-        #
-        #             # the loaded sleap file has them too, so exclude for both
-        #             idx_selected = [i for i in selected_pose_idx if i not in idx_llh]
-        #         filt_pose, _ = adp_filt(current_pose, idx_selected, idx_llh)
-        #         new_pose_list.append(filt_pose)
-        #     st.session_state['uploaded_pose'] = new_pose_list
-        # else:
-            # st.session_state['uploaded_pose'] = []
-
 
 def create_annotated_videos(vidpath_out,
                             framerate, annotation_classes,
@@ -382,47 +337,40 @@ def predict_annotate_video(ftype, selected_bodyparts, iterX_model, framerate, fr
         message_box.info('Predicting labels... ')
         # extract features, bin them
         features = []
-        # for i, data in enumerate(processed_input_data):
-        for i, f in enumerate(stqdm(new_pose_csvs, desc="Extracting spatiotemporal features from pose")):
-        # for i, f in enumerate(new_pose_csvs):
+        ftype = new_pose_csvs.split(".")[-1]
+        current_pose = load_pose_ftype(new_pose_csvs, ftype)
 
-            #current_pose = pd.read_csv(f,
-            #                           header=[0, 1, 2], sep=",", index_col=0)
-            #todo: adapt to multi animal by reading from config
-            current_pose = load_pose_ftype(f, ftype)
+        bp_level = 1
+        bp_index_list = []
 
-            bp_level = 1
-            bp_index_list = []
+        st.info("Selected keypoints/bodyparts (from config): " + ", ".join(selected_bodyparts))
+        st.info("Available keypoints/bodyparts in pose file: " + ", ".join(
+            current_pose.columns.get_level_values(bp_level).unique()))
+        # check if all bodyparts are in the pose file
 
-            if i == 0:
-                st.info("Selected keypoints/bodyparts (from config): " + ", ".join(selected_bodyparts))
-                st.info("Available keypoints/bodyparts in pose file: " + ", ".join(
-                    current_pose.columns.get_level_values(bp_level).unique()))
-                # check if all bodyparts are in the pose file
-
-                if len(selected_bodyparts) > len(current_pose.columns.get_level_values(bp_level).unique()):
-                    st.error(f'Not all selected keypoints/bodyparts are in the pose file: {f.name}')
+        if len(selected_bodyparts) > len(current_pose.columns.get_level_values(bp_level).unique()):
+            st.error(f'Not all selected keypoints/bodyparts are in the pose file: {f.name}')
+            st.stop()
+        elif len(selected_bodyparts) < len(current_pose.columns.get_level_values(bp_level).unique()):
+            # subselection would take care of this, so we need to make sure that they all exist
+            for bp in selected_bodyparts:
+                if bp not in current_pose.columns.get_level_values(bp_level).unique():
+                    st.error(f'At least one keypoint "{bp}" is missing in pose file: {f.name}')
                     st.stop()
-                elif len(selected_bodyparts) < len(current_pose.columns.get_level_values(bp_level).unique()):
-                    # subselection would take care of this, so we need to make sure that they all exist
-                    for bp in selected_bodyparts:
-                        if bp not in current_pose.columns.get_level_values(bp_level).unique():
-                            st.error(f'At least one keypoint "{bp}" is missing in pose file: {f.name}')
-                            st.stop()
-                for bp in selected_bodyparts:
-                    bp_index = np.argwhere(current_pose.columns.get_level_values(bp_level) == bp)
-                    bp_index_list.append(bp_index)
-                selected_pose_idx = np.sort(np.array(bp_index_list).flatten())
-                # get rid of likelihood columns for deeplabcut
-                idx_llh = selected_pose_idx[2::3]
+        for bp in selected_bodyparts:
+            bp_index = np.argwhere(current_pose.columns.get_level_values(bp_level) == bp)
+            bp_index_list.append(bp_index)
+        selected_pose_idx = np.sort(np.array(bp_index_list).flatten())
+        # get rid of likelihood columns for deeplabcut
+        idx_llh = selected_pose_idx[2::3]
 
-                # the loaded sleap file has them too, so exclude for both
-                idx_selected = [i for i in selected_pose_idx if i not in idx_llh]
-            filt_pose, _ = adp_filt(current_pose, idx_selected, idx_llh)
+        # the loaded sleap file has them too, so exclude for both
+        idx_selected = [i for i in selected_pose_idx if i not in idx_llh]
+        filt_pose, _ = adp_filt(current_pose, idx_selected, idx_llh)
 
-            total_n_frames.append(filt_pose.shape[0])
-            feats, _ = feature_extraction([filt_pose], 1, frames2integ)
-            features.append(feats)
+        total_n_frames.append(filt_pose.shape[0])
+        feats, _ = feature_extraction([filt_pose], 1, frames2integ)
+        features.append(feats)
         for i in stqdm(range(len(features)), desc="Behavior prediction from spatiotemporal features"):
             with st.spinner('Predicting behavior from features...'):
                 predict = bsoid_predict_numba_noscale([features[i]], iterX_model)
@@ -432,7 +380,7 @@ def predict_annotate_video(ftype, selected_bodyparts, iterX_model, framerate, fr
             predictions_raw = np.pad(predict_arr.repeat(repeat_n), (repeat_n, 0), 'edge')[:total_n_frames[i]]
             predictions_match = weighted_smoothing(predictions_raw, size=st.session_state['smooth_size'])
 
-            pose_prefix = st.session_state['pose'][i].name.rpartition(str.join('', ('.', ftype)))[0]
+            pose_prefix = st.session_state['pose'][i].split(".")[-1]
             annotated_str = str.join('', ('_annotated_', iter_folder))
             annotated_vid_name = str.join('', (pose_prefix, annotated_str, '.mp4'))
 

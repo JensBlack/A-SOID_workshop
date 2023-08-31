@@ -198,17 +198,22 @@ def main():
         le, ri = header_container.columns([1, 1])
 
         with le.form("config".upper(), clear_on_submit=True):
-            uploaded_config = st.file_uploader('Upload Config File', type='ini', help=UPLOAD_CONFIG_HELP)
+            
+            if st.session_state["config"] is not None:
+                default = st.session_state['config']["Project"].get("PROJECT_NAME")
+            else:
+                default = "workshop_project/WORKSHOP_START/config.ini"
+
+            uploaded_config = st.text_input("Set path for Config File", default, help = UPLOAD_CONFIG_HELP)
             if st.session_state['config'] is None:
                 submitted = st.form_submit_button("Upload")
                 if submitted and uploaded_config is not None:
-                    # To convert to a string based IO:
-                    stringio = StringIO(uploaded_config.getvalue().decode("utf-8"))
                     # read stringio
                     project_config = cfg.ConfigParser()
                     project_config.optionxform = str
-                    project_config.read_file(stringio)
+                    project_config.read(uploaded_config)
                     st.session_state['config'] = project_config
+                   
                     st.experimental_rerun()
             elif st.session_state['config'] is not None:
                 cleared = st.form_submit_button(":red[Delete]")

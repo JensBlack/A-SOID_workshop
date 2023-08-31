@@ -1,5 +1,5 @@
 tasks:
-  - name: Install Miniconda
+  - name: Install Miniconda and ASOID
     init: |
       curl https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh -o ~/miniconda.sh
       bash ~/miniconda.sh -b -p miniconda
@@ -8,6 +8,7 @@ tasks:
     command: |
       miniconda/bin/conda init > /dev/null
       exec bash
+      cd miniconda/bin/streamlit run asoid/app.py
     
 github:
   prebuilds:

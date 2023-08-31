@@ -1,6 +1,7 @@
 .DS_Store
 miniconda
-
+data/calms21_task1_test.npy
+data/calms21_task1_train.npy
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
