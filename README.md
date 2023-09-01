@@ -4,7 +4,9 @@ To start the workshop, click the button below:
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/JensBlack/A-SOID_workshop)
 
-Install is automatic, but requires a single "Yes" along the way.
+Setup GitPod like this:
+
+![image](./Gitpod_setup.png)
 
 When done, start A-SOiD with:
 
